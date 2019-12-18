@@ -6,6 +6,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -50,7 +53,25 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s){
             super.onPostExecute(s);
 
-            Log.i("JSON", s);
+          //  Log.i("JSON", s);
+            try { // step 2
+                JSONObject jsonObject = new JSONObject(s);
+                String weatherInfo = jsonObject.getString("weather");
+                Log.i("weather content", weatherInfo); // data yang diambil hanya weather dari API
+
+                JSONArray arr = new JSONArray(weatherInfo);
+                for (int i=0; i < arr.length(); i++){
+                    JSONObject jsonpart = arr.getJSONObject(i);
+
+                    Log.i("main",jsonpart.getString("main"));
+                    Log.i("description",jsonpart.getString("description"));
+                }
+
+
+            }catch (Exception e){
+
+                e.printStackTrace();
+            }
         }
     }
 
